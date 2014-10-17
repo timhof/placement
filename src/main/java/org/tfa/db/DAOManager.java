@@ -4,9 +4,12 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
+
+import org.tfa.dto.InputDTO;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
@@ -23,7 +26,39 @@ public class DAOManager {
         return DAOManagerSingleton.INSTANCE.get();
     }  
     
+    public static String createInCondition(String column, List<InputDTO> inputList, boolean isChar){
+    	
+    	StringBuilder sql = new StringBuilder();
+    	sql.append(column);
+    	sql.append(" in (");
+    	
+    	boolean hasSelected = false;
+    	for(InputDTO input : inputList){
+    		if(input.getSelected()){
+    			if(hasSelected){
+        			sql.append(", ");
+    			}
+    			if(isChar){
+    				sql.append(String.format("'%s'", input.getValue()));
+    			}
+    			else{
+    				sql.append(input.getValue());	
+    			}
+    			hasSelected = true;
+    		}
+    	}
+    	if(!hasSelected){
+    		sql.append("null");
+    	}
+    	
+    	sql.append(")");
+    	return sql.toString();
+    }
+    
     public ResultSet executeQuery(String query){
+    	
+    	System.out.println(query);
+    	
     	Statement createStatement;
     	ResultSet rs = null;
 		try {

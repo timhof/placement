@@ -1,0 +1,10 @@
+<label ng-repeat="input in regionTypesInput">
+  <input
+    type="checkbox"
+    name="selectedInputs[]"
+    value="{{input.value}}"
+    ng-model="input.selected"
+  > {{input.label}}
+</label>
+
+<button ng-click="searchRegions()">Search</button>
