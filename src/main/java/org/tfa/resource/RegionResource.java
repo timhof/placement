@@ -24,10 +24,6 @@ public class RegionResource {
  
                 -> regionService.find(request.params(":id")), new JsonTransformer());
  
-        get(API_CONTEXT + "/regions", "application/json", (request, response)
- 
-                -> regionService.findAll(), new JsonTransformer());
-        
         post(API_CONTEXT + "/regions", "application/json", (request, response)
         		 
                 -> regionService.search(request.body()), new JsonTransformer());

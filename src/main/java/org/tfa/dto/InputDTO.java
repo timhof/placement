@@ -1,18 +1,30 @@
 package org.tfa.dto;
 
+import com.google.gson.annotations.Expose;
+
 public class InputDTO {
 
-	private String label;
-	private String value;
-	private Boolean selected;
+	@Expose private String label;
+	@Expose private String value;
+	@Expose private Boolean selected;
 	
 	public InputDTO(String label, String value){
+		this(label, value, true);
+	}
+	
+	public InputDTO(String label, Integer value){
 		this(label, value, true);
 	}
 	
 	public InputDTO(String label, String value, Boolean selected){
 		this.label = label;
 		this.value = value;
+		this.selected = selected;
+	}
+	
+	public InputDTO(String label, Integer value, Boolean selected){
+		this.label = label;
+		this.value = value.toString();
 		this.selected = selected;
 	}
 	

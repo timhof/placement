@@ -9,6 +9,10 @@ public class RegionSearch {
 	private List<Region> regionList;
 	private List<InputDTO> regionTypesInput;
 	
+	public RegionSearch(){
+		
+	}
+	
 	public RegionSearch(List<Region> regionList, List<InputDTO> regionTypesInput){
 		this.regionList = regionList;
 		this.regionTypesInput = regionTypesInput;

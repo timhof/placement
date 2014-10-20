@@ -15,46 +15,24 @@ import org.tfa.model.Region;
 import com.google.gson.Gson;
 
 public class RegionService{
- 
-    public RegionSearch findAll() {
-    	List<Region> regionList = new ArrayList<>();
-        Map<String, InputDTO> regionTypesInputMap = new HashMap<String, InputDTO>();
-        
-        ResultSet rs = DAOManager.getInstance().executeQuery("select * from region");
-        try {
-			while (rs.next()) {
-				Region region = new Region();
-				region.setRegionId(rs.getInt("regionid"));
-				region.setName(rs.getString("name"));
-				region.setCode(rs.getString("regioncode"));
-				
-				regionList.add(region);
-				
-				String regionType = rs.getString("regiontype");
-				regionTypesInputMap.put(regionType, new InputDTO(regionType, regionType));
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-        
-        RegionSearch regionSearch = new RegionSearch(regionList, new ArrayList<InputDTO>(regionTypesInputMap.values()));
-        return regionSearch;
-    }
-    
+
     public RegionSearch search(String body){
     	
     	RegionSearch regionSearchInput = new Gson().fromJson(body, RegionSearch.class);
-    	
+    	if(regionSearchInput == null){
+    		regionSearchInput = new RegionSearch();
+    	}
         List<Region> regionList = new ArrayList<>();
         Map<String, InputDTO> regionTypesInputMap = new HashMap<String, InputDTO>();
         
         StringBuilder sql = new StringBuilder();
-        sql.append("select * from region ");
-        boolean hasCondition = false;
+        sql.append("select * from region where active='Y'");
+        boolean hasCondition = true;
         if(regionSearchInput.getRegionTypesInput() != null){
         	sql.append(hasCondition ? "and " : "where ");
         	sql.append(DAOManager.createInCondition("regiontype", regionSearchInput.getRegionTypesInput(), true));
         }
+        sql.append(" order by name");
         ResultSet rs = DAOManager.getInstance().executeQuery(sql.toString());
         try {
 			while (rs.next()) {

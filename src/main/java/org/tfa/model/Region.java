@@ -1,10 +1,12 @@
 package org.tfa.model;
 
+import com.google.gson.annotations.Expose;
+
 public class Region {
 
-	private Integer regionId;
-	private String name;
-	private String code;
+	@Expose private Integer regionId;
+	@Expose private String name;
+	@Expose private String code;
 	
 	public Integer getRegionId() {
 		return regionId;
