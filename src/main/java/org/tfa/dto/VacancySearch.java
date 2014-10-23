@@ -5,13 +5,15 @@ import java.util.List;
 import org.tfa.model.Cm;
 import org.tfa.model.Vacancy;
 
+import com.google.gson.annotations.Expose;
+
 public class VacancySearch {
 
-	private List<Vacancy> vacancyList;
-	private List<InputDTO> regionsInput;
-	private InputDTO selectedRegion;
-	private List<InputDTO> timePeriodsInput;
-	private InputDTO selectedTimePeriod;
+	@Expose private List<Vacancy> vacancyList;
+	@Expose private List<InputDTO> regionsInput;
+	@Expose private InputDTO selectedRegion;
+	@Expose private List<InputDTO> timePeriodsInput;
+	@Expose private InputDTO selectedTimePeriod;
 	
 	public VacancySearch(List<Vacancy> vacancyList, List<InputDTO> regionsInput, List<InputDTO> timePeriodsInput){
 		this.vacancyList = vacancyList;

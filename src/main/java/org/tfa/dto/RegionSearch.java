@@ -4,10 +4,12 @@ import java.util.List;
 
 import org.tfa.model.Region;
 
+import com.google.gson.annotations.Expose;
+
 public class RegionSearch {
 
-	private List<Region> regionList;
-	private List<InputDTO> regionTypesInput;
+	@Expose private List<Region> regionList;
+	@Expose private List<InputDTO> regionTypesInput;
 	
 	public RegionSearch(){
 		

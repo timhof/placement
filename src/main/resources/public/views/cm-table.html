@@ -4,13 +4,11 @@
         <th>CmPlacementStatusId</th>
         <th>CmId</th>
         <th>Name</th>
-        <th># Matches</th>
     </tr>
     <tr ng-repeat="cm in cms">
         <td>{{$index+1}}</td>
         <td>{{cm.cmPlacementStatusId}}</td>
         <td>{{cm.cmId}}</td>
         <td>{{cm.name}}</td>
-        <td>{{cm.matchCount}}</td>
     </tr>
 </table>

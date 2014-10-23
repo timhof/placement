@@ -85,9 +85,9 @@ public class CmService{
 
 		cmSearchInput.setCmList(cmList);
 		
-		for(Cm cm : cmList){
-			cm.setMatchList(matchService.findCmMatches(cm, timePeriod));
-		}
+//		for(Cm cm : cmList){
+//			cm.setMatchList(matchService.findCmMatches(cm, timePeriod));
+//		}
 		
 		return cmSearchInput;
 	}

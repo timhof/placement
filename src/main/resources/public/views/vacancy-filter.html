@@ -4,7 +4,6 @@
 	An un-documented (AFAIK) feature in ng-options is that you can use some bits from the ng-repeat directive with it, like track by. This allows us to choose some property as the comparison key.
  -->
 
-<div><select ng-model="selectedRegion" ng-options="region.label for region in regionsInput track by region.value" ng-change="changeRegion(selectedRegion)"></select></div>
-<div><select ng-model="selectedTimePeriod" ng-options="timePeriod.label for timePeriod in timePeriodsInput track by timePeriod.value" ng-change="changeTimePeriod(selectedTimePeriod)"></select></div>
-
-<button ng-click="searchVacancies()">Search</button>
+<div class="form-element"><select ng-model="selectedRegion" ng-options="region.label for region in regionsInput track by region.value" ng-change="changeRegion(selectedRegion)"></select></div>
+<div class="form-element"><select ng-model="selectedTimePeriod" ng-options="timePeriod.label for timePeriod in timePeriodsInput track by timePeriod.value" ng-change="changeTimePeriod(selectedTimePeriod)"></select></div>
+<div><button class="btn btn-sm btn-primary" ng-click="searchVacancies()">Search</button></div>
