@@ -13,7 +13,7 @@ public class TimePeriodSearch {
 
 	public TimePeriodSearch(){
 		this.startTimePeriodId = 25;
-		this.endTimePeriodId = 26;
+		this.endTimePeriodId = 27;
 	}
 	
 	public TimePeriodSearch(List<TimePeriod> timePeriodList, Integer startTimePeriodId, Integer endTimePeriodId){

@@ -1,5 +1,7 @@
 //app.js
-var app = angular.module('placement', ['ui.router']);
+var app = angular.module('placement', ['placement.controllers', 'ui.router']);
+angular.module('placement.controllers', ['placement.services']);
+angular.module('placement.services', []);
 
 app.config(function($stateProvider, $urlRouterProvider) {
 
@@ -86,269 +88,28 @@ app.config(function($stateProvider, $urlRouterProvider) {
 				templateUrl: 'views/vacancy-table.html'
 			}
 		}
+	})
+	
+	.state('hiringManager', {
+		url: '/hiringManager',
+		views: {
+
+			// the main template will be placed here (relatively named)
+			'': { 
+				templateUrl: 'views/partial-hiringManager.html',
+				controller: 'hiringManagerController' 
+			},
+
+			// the child views will be defined here (absolutely named)
+			'columnOne@hiringManager': { 
+				templateUrl: 'views/hiringManager-filter.html'
+			},
+			// for column two, we'll define a separate controller 
+			'columnTwo@hiringManager': { 
+				templateUrl: 'views/hiringManager-table.html'
+			}
+		}
 	});
 });
 
-app.controller('regionController', function ($scope, $http, regionService) {
 
-	$scope.regions = [];
-
-	var applyRemoteData = function(data) {
-
-		$scope.regions = data.regionList;
-		$scope.regionTypesInput = data.regionTypesInput;
-	}
-
-	var loadRemoteData = function(regionTypesInput){
-		regionService.searchRegions(regionTypesInput)
-		.then(
-				function( data ) {
-					applyRemoteData( data );
-				}
-		);
-	}
-
-	loadRemoteData();
-
-	$scope.searchRegions = function(){
-		loadRemoteData($scope.regionTypesInput);
-	}
-});
-
-app.controller('cmController', function ($scope, $http, cmService) {
-
-	var applyRemoteData = function(data) {
-
-		$scope.cms = data.cmList;
-		$scope.regionsInput = data.regionsInput;
-		$scope.timePeriodsInput = data.timePeriodsInput;
-		$scope.selectedRegion = data.selectedRegion;
-		$scope.selectedTimePeriod = data.selectedTimePeriod;
-	}
-
-	var loadRemoteData = function(regionsInput, timePeriodsInput, selectedRegion, selectedTimePeriod){
-		cmService.searchCms(regionsInput, timePeriodsInput, selectedRegion, selectedTimePeriod)
-		.then(
-				function( data ) {
-					applyRemoteData( data );
-				}
-		);
-	}
-
-	loadRemoteData();
-
-	$scope.searchCms = function(){
-		loadRemoteData($scope.regionsInput, $scope.timePeriodsInput, $scope.selectedRegion, $scope.selectedTimePeriod);
-	}
-	
-	$scope.changeRegion = function(option){
-		$scope.selectedRegion = option;
-	}
-	
-	$scope.changeTimePeriod = function(option){
-		$scope.selectedTimePeriod = option;
-	}
-});
-
-app.controller('vacancyController', function ($scope, $http, vacancyService) {
-
-	var applyRemoteData = function(data) {
-
-		$scope.vacancies = data.vacancyList;
-		$scope.regionsInput = data.regionsInput;
-		$scope.timePeriodsInput = data.timePeriodsInput;
-		$scope.selectedRegion = data.selectedRegion;
-		$scope.selectedTimePeriod = data.selectedTimePeriod;
-	}
-
-	var loadRemoteData = function(regionsInput, timePeriodsInput, selectedRegion, selectedTimePeriod){
-		vacancyService.searchVacancies(regionsInput, timePeriodsInput, selectedRegion, selectedTimePeriod)
-		.then(
-				function( data ) {
-					applyRemoteData( data );
-				}
-		);
-	}
-
-	loadRemoteData();
-
-	$scope.searchVacancies = function(){
-		loadRemoteData($scope.regionsInput, $scope.timePeriodsInput, $scope.selectedRegion, $scope.selectedTimePeriod);
-	}
-	
-	$scope.changeRegion = function(option){
-		$scope.selectedRegion = option;
-	}
-	
-	$scope.changeTimePeriod = function(option){
-		$scope.selectedTimePeriod = option;
-	}
-});
-
-app.service(
-		"regionService",
-		function( $http, $q ) {
-
-			// Return public API.
-			return({
-				searchRegions: searchRegions
-			});
-
-			function searchRegions( regionTypesInput ) {
-
-				var request = $http({
-					method: "post",
-					url: "/api/v1/regions",
-					params: {
-
-					},
-					data: {
-						regionTypesInput: regionTypesInput
-					}
-				});
-				return( request.then( handleSuccess, handleError ) );
-			}
-
-			// I transform the error response, unwrapping the application dta from
-			// the API response payload.
-			function handleError( response ) {
-
-				// The API response from the server should be returned in a
-				// nomralized format. However, if the request was not handled by the
-				// server (or what not handles properly - ex. server error), then we
-				// may have to normalize it on our end, as best we can.
-				if (
-						! angular.isObject( response.data ) ||
-						! response.data.message
-				) {
-
-					return( $q.reject( "An unknown error occurred." ) );
-
-				}
-				// Otherwise, use expected error message.
-				return( $q.reject( response.data.message ) );
-			}
-
-			// I transform the successful response, unwrapping the application data
-			// from the API response payload.
-			function handleSuccess( response ) {
-
-				return( response.data );
-
-			}
-		}
-);
-
-app.service(
-		"cmService",
-		function( $http, $q ) {
-
-			// Return public API.
-			return({
-				searchCms: searchCms
-			});
-
-			function searchCms( regionsInput, timePeriodsInput, selectedRegion, selectedTimePeriod ) {
-
-				var request = $http({
-					method: "post",
-					url: "/api/v1/cms",
-					params: {
-
-					},
-					data: {
-						regionsInput: regionsInput,
-						timePeriodsInput: timePeriodsInput,
-						selectedRegion: selectedRegion,
-						selectedTimePeriod: selectedTimePeriod
-					}
-				});
-				return( request.then( handleSuccess, handleError ) );
-			}
-
-			// I transform the error response, unwrapping the application dta from
-			// the API response payload.
-			function handleError( response ) {
-
-				// The API response from the server should be returned in a
-				// nomralized format. However, if the request was not handled by the
-				// server (or what not handles properly - ex. server error), then we
-				// may have to normalize it on our end, as best we can.
-				if (
-						! angular.isObject( response.data ) ||
-						! response.data.message
-				) {
-
-					return( $q.reject( "An unknown error occurred." ) );
-
-				}
-				// Otherwise, use expected error message.
-				return( $q.reject( response.data.message ) );
-			}
-
-			// I transform the successful response, unwrapping the application data
-			// from the API response payload.
-			function handleSuccess( response ) {
-
-				return( response.data );
-
-			}
-		}
-);
-
-app.service(
-		"vacancyService",
-		function( $http, $q ) {
-
-			// Return public API.
-			return({
-				searchVacancies: searchVacancies
-			});
-
-			function searchVacancies( regionsInput, timePeriodsInput, selectedRegion, selectedTimePeriod ) {
-
-				var request = $http({
-					method: "post",
-					url: "/api/v1/vacancies",
-					params: {
-
-					},
-					data: {
-						regionsInput: regionsInput,
-						timePeriodsInput: timePeriodsInput,
-						selectedRegion: selectedRegion,
-						selectedTimePeriod: selectedTimePeriod
-					}
-				});
-				return( request.then( handleSuccess, handleError ) );
-			}
-
-			// I transform the error response, unwrapping the application dta from
-			// the API response payload.
-			function handleError( response ) {
-
-				// The API response from the server should be returned in a
-				// nomralized format. However, if the request was not handled by the
-				// server (or what not handles properly - ex. server error), then we
-				// may have to normalize it on our end, as best we can.
-				if (
-						! angular.isObject( response.data ) ||
-						! response.data.message
-				) {
-
-					return( $q.reject( "An unknown error occurred." ) );
-
-				}
-				// Otherwise, use expected error message.
-				return( $q.reject( response.data.message ) );
-			}
-
-			// I transform the successful response, unwrapping the application data
-			// from the API response payload.
-			function handleSuccess( response ) {
-
-				return( response.data );
-
-			}
-		}
-);

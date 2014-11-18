@@ -5,3 +5,16 @@
 div.form-element{
 	margin: 5px 0px;
 }
+
+div.form-element ul{
+	padding: 0;
+	margin-left: 1em;
+}
+
+div.form-element span{
+	font-weight: bold;
+}
+
+div.form-element li{
+	list-style-type: none;
+}

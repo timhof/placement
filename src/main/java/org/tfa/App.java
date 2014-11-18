@@ -1,13 +1,11 @@
 package org.tfa;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
-import org.tfa.db.DAOManager;
 import org.tfa.resource.CmResource;
+import org.tfa.resource.HiringManagerResource;
 import org.tfa.resource.RegionResource;
 import org.tfa.resource.VacancyResource;
 import org.tfa.service.CmService;
+import org.tfa.service.HiringManagerService;
 import org.tfa.service.RegionService;
 import org.tfa.service.VacancyService;
 
@@ -25,5 +23,6 @@ public class App
         new RegionResource(new RegionService());
         new CmResource(new CmService());
         new VacancyResource(new VacancyService());
+        new HiringManagerResource(new HiringManagerService());
     }
 }

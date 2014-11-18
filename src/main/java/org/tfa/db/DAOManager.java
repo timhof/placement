@@ -96,7 +96,7 @@ public class DAOManager {
     private DAOManager() throws Exception {
         try
         {
-        	HikariConfig config = new HikariConfig("/opt/projectConf/spark.dev.properties");
+        	HikariConfig config = new HikariConfig("/opt/projectConf/spark.qa.properties");
         	this.src = new HikariDataSource(config);
         	this.open();
         }
