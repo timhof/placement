@@ -97,4 +97,16 @@ app.config(function($stateProvider, $urlRouterProvider) {
 	});
 });
 
+app.directive('filterCheckboxes', function(){
+	return {
+		restrict: "E",
+		scope:{
+			inputs: "="
+		},
+		template: function(element, attrs){
+			return '<li ng-repeat="input in inputs"><input type="checkbox" value="{{input.value}}" ng-model="input.selected"> {{input.label}}</li>';
+		}
+	}
+});
+
 

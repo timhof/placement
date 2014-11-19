@@ -1,12 +1,10 @@
 <table class="table table-hover">
     <tr>
-    	<th>Index</th>
         <th>RegionId</th>
         <th>Name</th>
         <th>Code</th>
     </tr>
     <tr ng-repeat="region in regions">
-        <td>{{$index+1}}</td>
         <td>{{region.regionId}}</td>
         <td>{{region.name}}</td>
         <td>{{region.code}}</td>

@@ -13,6 +13,11 @@ public class CmSearch {
 	@Expose private InputDTO selectedRegion;
 	@Expose private List<InputDTO> timePeriodsInput;
 	@Expose private InputDTO selectedTimePeriod;
+	@Expose private List<InputDTO> corpsYearsInput;
+	@Expose private List<InputDTO> stagesInput;
+	@Expose private List<InputDTO> stepsInput;
+	@Expose private List<InputDTO> releaseCodesInput;
+	@Expose private List<InputDTO> releaseStepsInput;
 	
 	public CmSearch(List<Cm> cmList, List<InputDTO> regionsInput, List<InputDTO> timePeriodsInput){
 		this.cmList = cmList;
@@ -48,6 +53,39 @@ public class CmSearch {
 	}
 	public void setSelectedTimePeriod(InputDTO selectedTimePeriod) {
 		this.selectedTimePeriod = selectedTimePeriod;
+	}
+	public List<InputDTO> getCorpsYearsInput() {
+		return corpsYearsInput;
+	}
+	public void setCorpsYearsInput(List<InputDTO> corpsYearInput) {
+		this.corpsYearsInput = corpsYearInput;
+	}
+	public void setSelectedRegion(InputDTO selectedRegion) {
+		this.selectedRegion = selectedRegion;
+	}
+	public List<InputDTO> getStagesInput() {
+		return stagesInput;
+	}
+	public void setStagesInput(List<InputDTO> stagesInput) {
+		this.stagesInput = stagesInput;
+	}
+	public List<InputDTO> getStepsInput() {
+		return stepsInput;
+	}
+	public void setStepsInput(List<InputDTO> stepsInput) {
+		this.stepsInput = stepsInput;
+	}
+	public List<InputDTO> getReleaseCodesInput() {
+		return releaseCodesInput;
+	}
+	public void setReleaseCodesInput(List<InputDTO> releaseCodesInput) {
+		this.releaseCodesInput = releaseCodesInput;
+	}
+	public List<InputDTO> getReleaseStepsInput() {
+		return releaseStepsInput;
+	}
+	public void setReleaseStepsInput(List<InputDTO> releaseStepsInput) {
+		this.releaseStepsInput = releaseStepsInput;
 	}
 
 }

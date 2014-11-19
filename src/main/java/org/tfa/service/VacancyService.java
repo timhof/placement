@@ -59,17 +59,22 @@ public class VacancyService{
 		List<Vacancy> vacancyList = new ArrayList<Vacancy>();
 
 		StringBuilder sql = new StringBuilder();
-		sql.append("select * from vacancy ");
-		sql.append("where active = 'Y' "); 
-		sql.append("and timePeriodKey = " + vacancySearchInput.getSelectedTimePeriod().getValue());
-		sql.append(" and regionKey = " + vacancySearchInput.getSelectedRegion().getValue());
-		sql.append(" order by name");
+		sql.append("select v.vacancyid, v.name, pp.name as pp_name, s.name as school_name ");
+		sql.append(" from vacancy v, placementpartner pp, school s ");
+		sql.append("where v.active = 'Y' "); 
+		sql.append("and v.timePeriodKey = " + vacancySearchInput.getSelectedTimePeriod().getValue());
+		sql.append(" and v.regionKey = " + vacancySearchInput.getSelectedRegion().getValue());
+		sql.append(" and v.placementpartnerkey = pp.placementpartnerid (+)");
+		sql.append(" and v.schoolkey = s.schoolid (+)");
+		sql.append(" order by v.name");
 		ResultSet rs = DAOManager.getInstance().executeQuery(sql.toString());
 		try {
 			while (rs.next()) {
 				Vacancy vacancy = new Vacancy();
 				vacancy.setVacancyId(rs.getInt("vacancyId"));
 				vacancy.setName(rs.getString("name"));
+				vacancy.setPlacementPartner(rs.getString("pp_name"));
+				vacancy.setSchool(rs.getString("school_name"));
 
 				vacancyList.add(vacancy);
 

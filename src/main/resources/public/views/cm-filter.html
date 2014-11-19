@@ -6,4 +6,29 @@
 
 <div class="form-element"><select ng-model="selectedRegion" ng-options="region.label for region in regionsInput track by region.value" ng-change="changeRegion(selectedRegion)"></select></div>
 <div class="form-element"><select ng-model="selectedTimePeriod" ng-options="timePeriod.label for timePeriod in timePeriodsInput track by timePeriod.value" ng-change="changeTimePeriod(selectedTimePeriod)"></select></div>
+<div class='form-element'>
+	<span>Corps Years</span>
+	<filter-checkboxes inputs="corpsYearsInput" />
+</div>
+
+<div class='form-element'>
+	<span>Steps</span>
+	<filter-checkboxes inputs="stepsInput" />
+</div>
+
+<div class='form-element'>
+	<span>Stages</span>
+	<filter-checkboxes inputs="stagesInput" />
+</div>
+
+<div class='form-element'>
+	<span>Release Codes</span>
+	<filter-checkboxes inputs="releaseCodesInput" />
+</div>
+
+<div class='form-element'>
+	<span>Release Steps</span>
+	<filter-checkboxes inputs="releaseStepsInput" />
+</div>
+
 <div><button class="btn btn-sm btn-primary" ng-click="searchCms()">Search</button></div>

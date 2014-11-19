@@ -5,10 +5,11 @@ angular.module('placement.controllers').controller('hiringManagerController', fu
 		$scope.hiringManagers = data.hiringManagerList;
 		$scope.regionsInput = data.regionsInput;
 		$scope.selectedRegion = data.selectedRegion;
+		$scope.entityTypesInput = data.entityTypesInput;
 	}
 
-	var loadRemoteData = function(regionsInput, selectedRegion){
-		hiringManagerService.searchHiringManagers(regionsInput, selectedRegion)
+	var loadRemoteData = function(regionsInput, selectedRegion, entityTypesInput){
+		hiringManagerService.searchHiringManagers(regionsInput, selectedRegion, entityTypesInput)
 		.then(
 				function( data ) {
 					applyRemoteData( data );
@@ -19,7 +20,7 @@ angular.module('placement.controllers').controller('hiringManagerController', fu
 	loadRemoteData();
 
 	$scope.searchHiringManagers = function(){
-		loadRemoteData($scope.regionsInput, $scope.selectedRegion);
+		loadRemoteData($scope.regionsInput, $scope.selectedRegion, $scope.entityTypesInput);
 	}
 	
 	$scope.changeRegion = function(option){

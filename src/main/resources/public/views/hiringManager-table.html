@@ -1,6 +1,5 @@
 <table class="table table-hover">
     <tr>
-    	<th>Index</th>
         <th>Person Id</th>
         <th>Name</th>
         <th>Role</th>
@@ -8,7 +7,6 @@
         <th>Entity Name</th>
     </tr>
     <tr ng-repeat="hiringManager in hiringManagers">
-        <td>{{$index+1}}</td>
         <td>{{hiringManager.hiringManagerId}}</td>
         <td>{{hiringManager.name}}</td>
         <td>{{hiringManager.role}}</td>

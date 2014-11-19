@@ -7,7 +7,8 @@ angular.module('placement.services').service(
 				searchCms: searchCms
 			});
 
-			function searchCms( regionsInput, timePeriodsInput, selectedRegion, selectedTimePeriod ) {
+			function searchCms( regionsInput, timePeriodsInput, selectedRegion, selectedTimePeriod, 
+					corpsYearsInput, stagesInput, stepsInput, releaseCodesInput, releaseStepsInput ) {
 
 				var request = $http({
 					method: "post",
@@ -19,7 +20,12 @@ angular.module('placement.services').service(
 						regionsInput: regionsInput,
 						timePeriodsInput: timePeriodsInput,
 						selectedRegion: selectedRegion,
-						selectedTimePeriod: selectedTimePeriod
+						selectedTimePeriod: selectedTimePeriod,
+						corpsYearsInput: corpsYearsInput,
+						stagesInput: stagesInput,
+						stepsInput: stepsInput,
+						releaseCodesInput: releaseCodesInput,
+						releaseStepsInput: releaseStepsInput
 					}
 				});
 				return( request.then( handleSuccess, handleError ) );

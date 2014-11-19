@@ -5,4 +5,8 @@
  -->
 
 <div class="form-element"><select ng-model="selectedRegion" ng-options="region.label for region in regionsInput track by region.value" ng-change="changeRegion(selectedRegion)"></select></div>
+<div class='form-element'>
+	<span>Types</span>
+	<filter-checkboxes inputs="entityTypesInput" />
+</div>
 <div><button class="btn btn-sm btn-primary" ng-click="searchHiringManagers()">Search</button></div>

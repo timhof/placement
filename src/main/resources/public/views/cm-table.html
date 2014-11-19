@@ -1,14 +1,24 @@
 <table class="table table-hover">
     <tr>
-    	<th>Index</th>
         <th>CmPlacementStatusId</th>
         <th>CmId</th>
+        <th>PersonId</th>
+        <th>Corps Year</th>
         <th>Name</th>
+        <th>Stage</th>
+        <th>Step</th>
+        <th>ReleaseCode</th>
+        <th>ReleaseStep</th>
     </tr>
     <tr ng-repeat="cm in cms">
-        <td>{{$index+1}}</td>
         <td>{{cm.cmPlacementStatusId}}</td>
         <td>{{cm.cmId}}</td>
+        <td>{{cm.personId}}</td>
+        <td>{{cm.corpsYear}}</td>
         <td>{{cm.name}}</td>
+        <td>{{cm.stage}}</td>
+        <td>{{cm.step}}</td>
+        <td>{{cm.releaseCode}}</td>
+        <td>{{cm.releaseStep}}</td>
     </tr>
 </table>

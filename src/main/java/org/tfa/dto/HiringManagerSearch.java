@@ -38,4 +38,16 @@ public class HiringManagerSearch {
 	public void setHiringManagerList(List<HiringManager> hiringManagerList) {
 		this.hiringManagerList = hiringManagerList;
 	}
+
+	public List<InputDTO> getEntityTypesInput() {
+		return entityTypesInput;
+	}
+
+	public void setEntityTypesInput(List<InputDTO> entityTypesInput) {
+		this.entityTypesInput = entityTypesInput;
+	}
+
+	public void setSelectedRegion(InputDTO selectedRegion) {
+		this.selectedRegion = selectedRegion;
+	}
 }

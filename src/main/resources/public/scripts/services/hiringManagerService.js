@@ -7,7 +7,7 @@ angular.module('placement.services').service(
 				searchHiringManagers: searchHiringManagers
 			});
 
-			function searchHiringManagers( regionsInput, selectedRegion ) {
+			function searchHiringManagers( regionsInput, selectedRegion, entityTypesInput ) {
 
 				var request = $http({
 					method: "post",
@@ -17,7 +17,8 @@ angular.module('placement.services').service(
 					},
 					data: {
 						regionsInput: regionsInput,
-						selectedRegion: selectedRegion
+						selectedRegion: selectedRegion,
+						entityTypesInput: entityTypesInput
 					}
 				});
 				return( request.then( handleSuccess, handleError ) );

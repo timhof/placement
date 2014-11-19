@@ -3,7 +3,9 @@ package org.tfa.service;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.tfa.db.DAOManager;
 import org.tfa.dto.CmSearch;
@@ -13,6 +15,7 @@ import org.tfa.dto.TimePeriodSearch;
 import org.tfa.model.Cm;
 import org.tfa.model.Region;
 import org.tfa.model.TimePeriod;
+import org.tfa.model.HiringManager.EntityType;
 
 import com.google.gson.Gson;
 
@@ -22,8 +25,13 @@ public class CmService{
 	public CmSearch search(String body){
 
 		CmSearch cmSearchInput = new Gson().fromJson(body, CmSearch.class);
-		MatchService matchService = new MatchService();
 		TimePeriodService timePeriodService = new TimePeriodService();
+		
+		Map<String, InputDTO> corpsYearInputMap = new HashMap<String, InputDTO>();
+		Map<String, InputDTO> stageInputMap = new HashMap<String, InputDTO>();
+		Map<String, InputDTO> stepInputMap = new HashMap<String, InputDTO>();
+		Map<String, InputDTO> releaseCodeInputMap = new HashMap<String, InputDTO>();
+		Map<String, InputDTO> releaseStepInputMap = new HashMap<String, InputDTO>();
 		
 		//Set TimePeriodsInput if not already set
 		if(cmSearchInput.getTimePeriodsInput() == null){
@@ -60,23 +68,92 @@ public class CmService{
 		List<Cm> cmList = new ArrayList<Cm>();
 
 		StringBuilder sql = new StringBuilder();
-		sql.append("select cmps.cmplacementstatusid, p.firstname || ' ' || p.lastname as name, cm.cmid ");
-		sql.append("from cmplacementstatus cmps, cm cm, person p ");
+		sql.append("select cmps.cmplacementstatusid, d.stage, d.step, cm.releasecode, cm.releasestep, ");
+		sql.append("cm.corpsyear, p.personid, p.firstname || ' ' || p.lastname as name, cm.cmid ");
+		sql.append("from cmplacementstatus cmps, cm cm, person p, disposition d ");
 		sql.append("where cmps.active = 'Y' "); 
 		sql.append("and cmps.cmkey = cm.cmid ");
 		sql.append("and p.personid = cm.personkey ");
+		sql.append("and d.personkey = p.personid ");
+		sql.append("and d.iscurrent = 'Y' ");
 		sql.append("and cmps.timePeriodKey = " + timePeriod.getTimePeriodId());
 		sql.append(" and cmps.placementRegionKey = " + cmSearchInput.getSelectedRegion().getValue());
+		if(cmSearchInput.getCorpsYearsInput() != null){
+        	sql.append(" and " + DAOManager.createInCondition("corpsyear", cmSearchInput.getCorpsYearsInput(), false));
+        }
+		if(cmSearchInput.getStagesInput() != null){
+        	sql.append(" and (" + DAOManager.createInCondition("stage", cmSearchInput.getStagesInput(), true));
+        	if (cmSearchInput.getStagesInput().stream().anyMatch(ti -> (ti.getSelected() && ti.getValue().equals("null")))) {
+        		sql.append(" or stage is null or stage = ''");
+        	}
+        	sql.append(") ");
+        }
+		if(cmSearchInput.getStepsInput() != null){
+        	sql.append(" and (" + DAOManager.createInCondition("step", cmSearchInput.getStepsInput(), true));
+        	if (cmSearchInput.getStepsInput().stream().anyMatch(ti -> (ti.getSelected() && ti.getValue().equals("null")))) {
+        		sql.append(" or step is null or step = ''");
+        	}
+        	sql.append(") ");
+        }
+		if(cmSearchInput.getReleaseCodesInput() != null){
+        	sql.append(" and (" + DAOManager.createInCondition("releasecode", cmSearchInput.getReleaseCodesInput(), true));
+        	if (cmSearchInput.getReleaseCodesInput().stream().anyMatch(ti -> (ti.getSelected() && ti.getValue().equals("null")))) {
+        		sql.append(" or releasecode is null or releasecode = ''");
+        	}
+        	sql.append(") ");
+        }
+		if(cmSearchInput.getReleaseStepsInput() != null){
+        	sql.append(" and (" + DAOManager.createInCondition("releasestep", cmSearchInput.getReleaseStepsInput(), true));
+        	if (cmSearchInput.getReleaseStepsInput().stream().anyMatch(ti -> (ti.getSelected() && ti.getValue().equals("null")))) {
+        		sql.append(" or releasestep is null or releasestep = ''");
+        	}
+        	sql.append(") ");
+        }
 		sql.append(" order by name");
 		ResultSet rs = DAOManager.getInstance().executeQuery(sql.toString());
 		try {
 			while (rs.next()) {
+				
+				String stage = rs.getString("stage");
+				String step = rs.getString("step");
+				String releaseCode = rs.getString("releasecode");
+				String releaseStep = rs.getString("releasestep");
+				
 				Cm cm = new Cm();
 				cm.setCmPlacementStatusId(rs.getInt("cmplacementstatusid"));
 				cm.setName(rs.getString("name"));
 				cm.setCmId(rs.getInt("cmid"));
+				cm.setPersonId(rs.getInt("personid"));
+				cm.setCorpsYear(rs.getInt("corpsyear"));
+				cm.setStage(stage);
+				cm.setStep(step);
+				cm.setReleaseCode(releaseCode);
+				cm.setReleaseStep(rs.getString("releasestep"));
 
 				cmList.add(cm);
+				
+				String corpsYearStr = String.valueOf(rs.getInt("corpsyear"));
+				corpsYearInputMap.put(corpsYearStr, new InputDTO(corpsYearStr, corpsYearStr));
+				
+				if(stage == null || "".equals(stage)){
+					stage = "null";
+				}
+				stageInputMap.put(stage, new InputDTO(stage, stage));
+				
+				if(step == null || "".equals(step)){
+					step = "null";
+				}
+				stepInputMap.put(step, new InputDTO(step, step));
+				
+				if(releaseCode == null || "".equals(releaseCode)){
+					releaseCode = "null";
+				}
+				releaseCodeInputMap.put(releaseCode, new InputDTO(releaseCode, releaseCode));
+				
+				if(releaseStep == null || "".equals(releaseStep)){
+					releaseStep = "null";
+				}
+				releaseStepInputMap.put(releaseStep, new InputDTO(releaseStep, releaseStep));
 
 			}
 		} catch (SQLException e) {
@@ -85,10 +162,21 @@ public class CmService{
 
 		cmSearchInput.setCmList(cmList);
 		
-//		for(Cm cm : cmList){
-//			cm.setMatchList(matchService.findCmMatches(cm, timePeriod));
-//		}
-		
+		if(cmSearchInput.getCorpsYearsInput() == null){
+			cmSearchInput.setCorpsYearsInput(new ArrayList<InputDTO>(corpsYearInputMap.values()));
+        }
+		if(cmSearchInput.getStagesInput() == null){
+			cmSearchInput.setStagesInput(new ArrayList<InputDTO>(stageInputMap.values()));
+        }
+		if(cmSearchInput.getStepsInput() == null){
+			cmSearchInput.setStepsInput(new ArrayList<InputDTO>(stepInputMap.values()));
+        }
+		if(cmSearchInput.getReleaseCodesInput() == null){
+			cmSearchInput.setReleaseCodesInput(new ArrayList<InputDTO>(releaseCodeInputMap.values()));
+        }
+		if(cmSearchInput.getReleaseStepsInput() == null){
+			cmSearchInput.setReleaseStepsInput(new ArrayList<InputDTO>(releaseStepInputMap.values()));
+        }
 		return cmSearchInput;
 	}
 
