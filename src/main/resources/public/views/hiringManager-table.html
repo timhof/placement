@@ -1,12 +1,12 @@
 <table class="table table-hover">
     <tr>
-        <th>Person Id</th>
-        <th>Name</th>
-        <th>Role</th>
-        <th>Entity Type</th>
-        <th>Entity Name</th>
+        <th><a href="" ng-click="predicate = 'hiringManagerId'; reverse=!reverse">Person Id</a></th>
+        <th><a href="" ng-click="predicate = 'name'; reverse=!reverse">Name</a></th>
+        <th><a href="" ng-click="predicate = 'role'; reverse=!reverse">Role</a></th>
+        <th><a href="" ng-click="predicate = 'entityType.label'; reverse=!reverse">Entity Type</a></th>
+        <th><a href="" ng-click="predicate = 'entityName'; reverse=!reverse">Entity Name</a></th>
     </tr>
-    <tr ng-repeat="hiringManager in hiringManagers">
+    <tr ng-repeat="hiringManager in hiringManagers | orderBy:predicate:reverse">
         <td>{{hiringManager.hiringManagerId}}</td>
         <td>{{hiringManager.name}}</td>
         <td>{{hiringManager.role}}</td>
